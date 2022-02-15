@@ -26,6 +26,8 @@ def batch_loader(
     indices = list(range(len(X)))
 
     # TODO (copy from last assignment) implement dataset shuffling here.
+    if(shuffle == True):
+        np.random.shuffle(indices)
 
     for i in range(num_batches):
         # select a set of indices for each batch of samples
@@ -43,8 +45,10 @@ def load_full_mnist():
     """
     Loads and splits the dataset into train, validation and test.
     """
-    train_size = 20000
-    test_size = 10000
+    #train_size = 20000
+    #test_size = 10000
+    train_size = 2000
+    test_size = 1000
     X_train, Y_train, X_val, Y_val = mnist.load()
 
     # First 20000 images from train set
