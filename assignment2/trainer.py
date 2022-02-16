@@ -89,20 +89,20 @@ class BaseTrainer:
                     val_history["accuracy"][global_step] = accuracy_val
                     # TODO: Implement early stopping (copy from last assignment)
 
-                    '''
+                    
                     current_loss = val_history['loss'][global_step]
                     vals.append(current_loss)
-                    last_10_vals = vals[-50:]
+                    last_50_vals = vals[-50:]
                     val_51 = np.inf
                     try:
-                        val_11 = vals[-51]
+                        val_51 = vals[-51]
                     except:
                         continue
                 
-                    # check if the value has not improved for the last 10 validations
-                    if(all(val_11 <= val for val in last_10_vals) and (len(vals) >= 50 )):  
+                    # check if the value has not improved for the last 50 validations
+                    if(all(val_51 <= val for val in last_50_vals) and (len(vals) >= 50 )):  
                         print('Early stop at ', epoch, 'epochs')
                         return train_history, val_history
-                    '''
+    
                 global_step += 1
         return train_history, val_history
