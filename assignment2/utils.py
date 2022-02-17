@@ -46,10 +46,10 @@ def load_full_mnist():
     Loads and splits the dataset into train, validation and test.
     """
     #reduced the trainingset to run faster
+    #train_size = 20000
+    #test_size = 10000
     train_size = 20000
     test_size = 10000
-    #train_size = 2000
-    #test_size = 1000
     X_train, Y_train, X_val, Y_val = mnist.load()
 
     # First 20000 images from train set
@@ -90,9 +90,9 @@ def plot_loss(loss_dict: dict, label: str = None, npoints_to_average=1, plot_var
         mean_loss.append(np.mean(points))
         loss_std.append(np.std(points))
         steps.append(step)
-    plt.plot(steps, mean_loss,
-             label=f"{label} (mean over {npoints_to_average} steps)")
+    plt.plot(steps, mean_loss)
+             #label=f"{label} (mean over {npoints_to_average} steps)")
     plt.fill_between(
         steps, np.array(mean_loss) -
         np.array(loss_std), np.array(mean_loss) + loss_std,
-        alpha=.2, label=f"{label} variance over {npoints_to_average} steps")
+        alpha=.2) #label=f"{label} variance over {npoints_to_average} steps")
