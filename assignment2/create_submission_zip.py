@@ -20,13 +20,13 @@ def query(question, options):
 
 # If you create other files, edit this list to include them in the .zip file.
 files_to_include = {
-    "task2": [".py"],
-    "task2a": [".py"],
-    "task3": [".py"],
-    "task4c": [".py"],
+    "task2": [".ipynb"],
+    "task2a": [".ipynb"],
+    "task3": [".ipynb"],
+    "task4c": [".ipynb"],
     "trainer": [".py"],
     "utils": [".py"],
-    "mnist.py": [".py"]
+    "mnist": [".py"]
 
 }
 zipfile_path = "assignment_code.zip"
