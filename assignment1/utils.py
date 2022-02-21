@@ -27,6 +27,7 @@ def batch_loader(
     indices = list(range(len(X)))
 
     # TODO (task 2e) implement dataset shuffling here.
+ 
 
     # we shuffle the idices in the training set
     if(shuffle == True):
