@@ -48,7 +48,6 @@ class ExampleModel(nn.Module):
         # There is no need for softmax activation function, as this is
         # included with nn.CrossEntropyLoss
         self.classifier = nn.Sequential(
-            #??
             nn.Flatten(), # Flattens the image from shape (batch_size, C, Height, width) to (batch_size, C*height*width)
             nn.Linear(self.num_output_features, 64),
             nn.ReLU(),
@@ -68,8 +67,6 @@ class ExampleModel(nn.Module):
         out = self.feature_extractor(out)
         # Hidden linear layer
         out = self.classifier(out) 
-
-
 
         expected_shape = (batch_size, self.num_classes)
         assert out.shape == (batch_size, self.num_classes),\
