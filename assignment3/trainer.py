@@ -66,8 +66,10 @@ class Trainer:
         print(self.model)
 
         # Define our optimizer. SGD = Stochastich Gradient Descent
-        self.optimizer = torch.optim.SGD(self.model.parameters(),
-                                         self.learning_rate)
+        #Task 2
+        #self.optimizer = torch.optim.SGD(self.model.parameters(), self.learning_rate)
+        #Task 3 model 2
+        self.optimizer = torch.optim.ASGD(self.model.parameters(), self.learning_rate, lambd=0.0001, alpha=0.75, t0=1000000.0, weight_decay=0)
 
         # Load our dataset
         self.dataloader_train, self.dataloader_val, self.dataloader_test = dataloaders
