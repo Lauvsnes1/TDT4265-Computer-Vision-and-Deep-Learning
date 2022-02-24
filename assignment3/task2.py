@@ -114,6 +114,4 @@ def main():
     create_plots(trainer, "task2")
 
 if __name__ == "__main__":
-    main()clab02:~/Desktop/Datasyn_og_dyp_læring/Assignments$ cd TDT4265-starter-code/
-clab02:~/Desktop/Datasyn_og_dyp_læring/Assignments/TDT4265-starter-code$ code .
-clab02:~/Desktop/Datasyn_og_dyp_læring/Assignments/TDT4265-starter-code$ 
+    main()
