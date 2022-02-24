@@ -32,7 +32,7 @@ def compute_loss_and_accuracy(
             # Forward pass the images through our model
             output_probs = model(X_batch)
             # Compute Loss and Accuracy
-            average_loss += loss_criterion(output_probs, Y_batch)
+            average_loss += loss_criterion(output_probs, Y_batch).item()
             _, pred_labels = torch.max(output_probs, 1)
             accuracy += (pred_labels == Y_batch).sum().item() / Y_batch.shape[0]
     average_loss = average_loss/len(dataloader)

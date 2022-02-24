@@ -63,7 +63,7 @@ class ExampleModel(nn.Module):
         # TODO: Implement this function (Task  2a)
         batch_size = x.shape[0]
         out = x
-        # First hidden conv layer
+        # Hidden conv layer
         out = self.feature_extractor(out)
         # Hidden linear layer
         out = self.classifier(out) 
@@ -114,4 +114,6 @@ def main():
     create_plots(trainer, "task2")
 
 if __name__ == "__main__":
-    main()
+    main()clab02:~/Desktop/Datasyn_og_dyp_læring/Assignments$ cd TDT4265-starter-code/
+clab02:~/Desktop/Datasyn_og_dyp_læring/Assignments/TDT4265-starter-code$ code .
+clab02:~/Desktop/Datasyn_og_dyp_læring/Assignments/TDT4265-starter-code$ 
