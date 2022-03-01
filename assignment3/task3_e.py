@@ -95,10 +95,13 @@ def create_plots(trainer: Trainer, name: str):
     plt.title("Cross Entropy Loss")
     utils.plot_loss(trainer.train_history["loss"], label="Training loss", npoints_to_average=10)
     utils.plot_loss(trainer.validation_history["loss"], label="Validation loss")
+    utils.plot_loss(trainer.test_history["loss"], label="Test loss", npoints_to_average=10)
     plt.legend()
     plt.subplot(1, 2, 2)
     plt.title("Accuracy")
     utils.plot_loss(trainer.validation_history["accuracy"], label="Validation Accuracy")
+    utils.plot_loss(trainer.test_history["accuracy"], label="Test Accuracy")
+    
     plt.legend()
     plt.savefig(plot_path.joinpath(f"{name}_plot.png"))
     plt.show()
@@ -109,7 +112,7 @@ def main():
     # You can try to change this and check if you still get the same result! 
     starttime = time.time()
     utils.set_seed(0)
-    epochs = 10
+    epochs = 1
     batch_size = 64
     learning_rate = 1e-3
     early_stop_count = 4
