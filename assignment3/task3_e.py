@@ -24,27 +24,30 @@ class Model2(nn.Module):
         self.num_classes = num_classes
         # Define the convolutional layers
         self.feature_extractor = nn.Sequential(
-            nn.Conv2d(
-                in_channels=image_channels,
-                out_channels=num_filters,
-                kernel_size=5,
-                stride=1,
-                padding=2
-            ),
+            #First hidden conv layer
+            nn.Conv2d(in_channels=image_channels, out_channels=num_filters, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(32),
             nn.LeakyReLU(),
-            nn.Conv2d(in_channels=32, out_channels=32, kernel_size = 5, stride = 1, padding = 2),
+
+            #Second hidden conv layer
+            nn.Conv2d(in_channels=32, out_channels=32, kernel_size = 3, stride = 1, padding = 1),
             nn.MaxPool2d(kernel_size = 2, stride = 2),
             nn.BatchNorm2d(32),
             nn.LeakyReLU(),
+
+            #Third hidden conv layer
             nn.Conv2d(in_channels=32, out_channels=64, kernel_size = 3, stride = 1, padding = 1),
             nn.MaxPool2d(kernel_size = 2, stride = 2),
             nn.BatchNorm2d(64),
             nn.LeakyReLU(),
+
+            #Fourth hidden conv layer
             nn.Conv2d(in_channels=64, out_channels=128, kernel_size = 3, stride = 1, padding = 1),
             nn.MaxPool2d(kernel_size = 2, stride = 2),
             nn.BatchNorm2d(128),
             nn.LeakyReLU(),
+
+            #Dropout
             nn.Dropout(0.25)
         )
         # The output of feature_extractor will be [batch_size, num_filters, 16, 16]
@@ -56,13 +59,21 @@ class Model2(nn.Module):
         # included with nn.CrossEntropyLoss
         self.classifier = nn.Sequential(
             nn.Flatten(), # Flattens the image from shape (batch_size, C, Height, width) to (batch_size, C*height*width)
+
+            #First linear layer
             nn.Linear(self.num_output_features, 128),
             nn.BatchNorm1d(128),
             nn.LeakyReLU(),
+
+            #Second linear layer
             nn.Linear(128,128),
             nn.BatchNorm1d(128),
             nn.LeakyReLU(),
+
+            #Dropout
             nn.Dropout(0.25),
+
+            #Third linear layer
             nn.Linear(128,num_classes)
         )
 
@@ -98,7 +109,9 @@ def create_plots(trainer: Trainer, name: str):
     plt.legend()
     plt.subplot(1, 2, 2)
     plt.title("Accuracy")
+    utils.plot_loss(trainer.train_history["accuracy"], label="Train Accuracy")
     utils.plot_loss(trainer.validation_history["accuracy"], label="Validation Accuracy")
+    utils.plot_loss(trainer.test_history["accuracy"], label="Test Accuracy")
     plt.legend()
     plt.savefig(plot_path.joinpath(f"{name}_plot.png"))
     plt.show()

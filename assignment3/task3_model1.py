@@ -25,13 +25,7 @@ class Model1(nn.Module):
         self.num_classes = num_classes
         # Define the convolutional layers
         self.feature_extractor = nn.Sequential(
-            nn.Conv2d(
-                in_channels=image_channels,
-                out_channels=num_filters,
-                kernel_size=3,
-                stride=1,
-                padding=1
-            ),
+            nn.Conv2d(in_channels=image_channels, out_channels=num_filters, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(num_filters),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size = 2, stride = 2),
@@ -90,7 +84,9 @@ def create_plots(trainer: Trainer, name: str):
     plt.legend()
     plt.subplot(1, 2, 2)
     plt.title("Accuracy")
+    utils.plot_loss(trainer.train_history["accuracy"], label="Train Accuracy")
     utils.plot_loss(trainer.validation_history["accuracy"], label="Validation Accuracy")
+    utils.plot_loss(trainer.test_history["accuracy"], label="Test Accuracy")
     plt.legend()
     plt.savefig(plot_path.joinpath(f"{name}_plot.png"))
     plt.show()
