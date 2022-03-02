@@ -66,8 +66,13 @@ class Trainer:
         print(self.model)
 
         # Define our optimizer. SGD = Stochastich Gradient Descent
-        self.optimizer = torch.optim.SGD(self.model.parameters(),
-                                         self.learning_rate)
+        #Task 2 and Task 3 model 1
+        #self.optimizer = torch.optim.SGD(self.model.parameters(), self.learning_rate)
+        #Task 3 model 2
+        #self.optimizer = torch.optim.ASGD(self.model.parameters(), self.learning_rate, lambd=0.0001, alpha=0.75, t0=1000000.0, weight_decay=0)
+        #For task 3d, we initialized optimizer in file task3d.py 
+        #Task 3 e)
+        self.optimizer = torch.optim.Adam(self.model.parameters(), self.learning_rate)
 
         # Load our dataset
         self.dataloader_train, self.dataloader_val, self.dataloader_test = dataloaders
@@ -87,6 +92,14 @@ class Trainer:
             loss=collections.OrderedDict(),
             accuracy=collections.OrderedDict()
         )
+        self.test_history = dict(
+            loss=collections.OrderedDict(),
+            accuracy=collections.OrderedDict()
+        )
+        
+
+
+    
         self.checkpoint_dir = pathlib.Path("checkpoints")
 
     def validation_step(self):
@@ -95,11 +108,25 @@ class Trainer:
             Train, validation and test.
         """
         self.model.eval()
+
         validation_loss, validation_acc = compute_loss_and_accuracy(
             self.dataloader_val, self.model, self.loss_criterion
         )
+        test_loss, test_acc = compute_loss_and_accuracy(
+            self.dataloader_test, self.model, self.loss_criterion
+        )
+        train_loss, train_acc = compute_loss_and_accuracy(
+            self.dataloader_train, self.model, self.loss_criterion
+        )
         self.validation_history["loss"][self.global_step] = validation_loss
         self.validation_history["accuracy"][self.global_step] = validation_acc
+
+        self.test_history["loss"][self.global_step] = test_loss
+        self.test_history["accuracy"][self.global_step] = test_acc
+
+        self.train_history["loss"][self.global_step] = train_loss
+        self.train_history["accuracy"][self.global_step] = train_acc
+
         used_time = time.time() - self.start_time
         print(
             f"Epoch: {self.epoch:>1}",
@@ -107,6 +134,10 @@ class Trainer:
             f"Global step: {self.global_step:>6}",
             f"Validation Loss: {validation_loss:.2f}",
             f"Validation Accuracy: {validation_acc:.3f}",
+            f"Test loss: {test_loss:.3f}",
+            f"Test Accuracy: {test_acc:.3f}",
+            f"Train loss: {train_loss:.3f}",
+            f"Train Accuracy: {train_acc:.3f}",
             sep=", ")
         self.model.train()
 
@@ -128,7 +159,7 @@ class Trainer:
 
     def train_step(self, X_batch, Y_batch):
         """
-        Perform forward, backward and gradient descent step here.
+        Perform forward, backward and gradient descent step here.        
         The function is called once for every batch (see trainer.py) to perform the train step.
         The function returns the mean loss value which is then automatically logged in our variable self.train_history.
 
