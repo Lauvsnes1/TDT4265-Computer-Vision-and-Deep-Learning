@@ -106,7 +106,7 @@ def create_plots(trainer: Trainer, name: str):
     plt.title("Cross Entropy Loss")
     utils.plot_loss(trainer.train_history["loss"], label="Training loss", npoints_to_average=10)
     utils.plot_loss(trainer.validation_history["loss"], label="Validation loss")
-    utils.plot_loss(trainer.test_history["loss"], label="Test loss", npoints_to_average=10)
+    utils.plot_loss(trainer.test_history["loss"], label="Test loss")
     plt.legend()
     plt.subplot(1, 2, 2)
     plt.title("Accuracy")
@@ -123,7 +123,7 @@ def main():
     # You can try to change this and check if you still get the same result! 
     starttime = time.time()
     utils.set_seed(0)
-    epochs = 1
+    epochs = 10
     batch_size = 64
     learning_rate = 1e-3
     early_stop_count = 4
@@ -140,7 +140,7 @@ def main():
     trainer.train()
     endtime = time.time()
     print("Time is took to run the network: ", endtime-starttime)
-    create_plots(trainer, "task3_model2")
+    create_plots(trainer, "task3_model_e")
 
 if __name__ == "__main__":
    main()

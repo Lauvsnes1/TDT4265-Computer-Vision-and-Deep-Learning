@@ -23,9 +23,9 @@ def load_cifar10(batch_size: int, validation_fraction: float = 0.1
     transform_train = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize(mean, std),
-        # transforms.RandomHorizontalFlip(),
-        # transforms.RandomCrop(32, padding=4),
-        #transforms.ColorJitter()
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomCrop(32, padding=4),
+        transforms.ColorJitter()
     ])
     
 

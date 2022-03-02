@@ -69,9 +69,10 @@ class Trainer:
         #Task 2 and Task 3 model 1
         #self.optimizer = torch.optim.SGD(self.model.parameters(), self.learning_rate)
         #Task 3 model 2
-        self.optimizer = torch.optim.ASGD(self.model.parameters(), self.learning_rate, lambd=0.0001, alpha=0.75, t0=1000000.0, weight_decay=0)
+        #self.optimizer = torch.optim.ASGD(self.model.parameters(), self.learning_rate, lambd=0.0001, alpha=0.75, t0=1000000.0, weight_decay=0)
+        #For task 3d, we initialized optimizer in file task3d.py 
         #Task 3 e)
-        #self.optimizer = torch.optim.Adam(self.model.parameters(), self.learning_rate)
+        self.optimizer = torch.optim.Adam(self.model.parameters(), self.learning_rate)
 
         # Load our dataset
         self.dataloader_train, self.dataloader_val, self.dataloader_test = dataloaders
