@@ -6,8 +6,13 @@ import numpy as np
 import pathlib
 np.random.seed(0)
 
-mean = (0.5, 0.5, 0.5)
-std = (.25, .25, .25)
+# Task 2 and task 3
+# mean = (0.5, 0.5, 0.5)
+# std = (.25, .25, .25)
+
+# Task 4
+mean=(0.485, 0.456, 0.406)
+std=(0.229, 0.224, 0.225)
 
 def get_data_dir():
     server_dir = pathlib.Path("/work/datasets/cifar10")
@@ -21,15 +26,23 @@ def load_cifar10(batch_size: int, validation_fraction: float = 0.1
     # Note that transform train will apply the same transform for
     # validation!
     transform_train = transforms.Compose([
+        # #Task 2 and task 3 a
+        # transforms.ToTensor(),
+        # transforms.Normalize(mean, std),
+        # #Task 3e
+        # transforms.RandomHorizontalFlip(),
+        # transforms.RandomCrop(32, padding=4),
+        # transforms.ColorJitter()
+
+        #Task 4
+        transforms.Resize((224, 224)),
         transforms.ToTensor(),
         transforms.Normalize(mean, std),
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomCrop(32, padding=4),
-        transforms.ColorJitter()
     ])
     
 
     transform_test = transforms.Compose([
+        transforms.Resize((224, 224)), # Task 4
         transforms.ToTensor(),
         transforms.Normalize(mean, std)
     ])

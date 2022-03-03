@@ -42,7 +42,26 @@ def torch_image_to_numpy(image: torch.Tensor):
         return image
     assert image.shape[0] == 3, "Expected color channel to be on first axis. Got: {}".format(image.shape)
     image = np.moveaxis(image, 0, 2)
+    print(image)
     return image
 
 
 indices = [14, 26, 32, 49, 52]
+
+num_filters = len(indices)
+
+plt.figure(figsize=(20, 4)) 
+n = 1
+
+for i in indices:
+    plt.subplot(2, num_filters, n)
+    # Plot weight here
+    weight_vis = torch_image_to_numpy(first_conv_layer.weight[i,...])
+    plt.imshow(weight_vis)
+    plt.subplot(2, num_filters, num_filters+n)
+    # Plot activation here
+    activation_vis = torch_image_to_numpy(activation[0,i])
+    plt.imshow(activation_vis, cmap="gray")
+    #plt.plot(torch_image_to_numpy(activation))
+    n += 1
+plt.savefig("plots/task_4b.png")
