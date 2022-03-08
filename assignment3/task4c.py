@@ -8,9 +8,6 @@ print("Image shape:", image.size)
 
 model = torchvision.models.resnet18(pretrained=True)
 print(model)
-first_conv_layer = model.conv1
-print("First conv layer weight shape:", first_conv_layer.weight.shape)
-print("First conv layer:", first_conv_layer)
 
 # Resize, and normalize the image with the mean and standard deviation
 image_transform = torchvision.transforms.Compose([
@@ -21,9 +18,10 @@ image_transform = torchvision.transforms.Compose([
 image = image_transform(image)[None]
 print("Image shape:", image.shape)
 
-activation = first_conv_layer(image)
-print("Activation shape:", activation.shape)
+for child in torch.nn.Sequential(*list(model.children())[:-2]):
+    image = child(image)
 
+print("Activation shape:", image.shape)
 
 def torch_image_to_numpy(image: torch.Tensor):
     """
@@ -47,20 +45,12 @@ def torch_image_to_numpy(image: torch.Tensor):
 
 indices = [14, 26, 32, 49, 52]
 
-num_filters = len(indices)
-
-plt.figure(figsize=(20, 12)) 
 n = 1
 
-for i in indices:
-    plt.subplot(2, num_filters, n)
-    # Plot weight here
-    weight_vis = torch_image_to_numpy(first_conv_layer.weight[i,...])
-    plt.imshow(weight_vis)
-    plt.subplot(2, num_filters, num_filters+n)
-    # Plot activation here
-    activation_vis = torch_image_to_numpy(activation[0,i])
+plt.figure(figsize=(20, 12))
+for i in range(len(indices) * 2):
+    plt.subplot(2, len(indices), n)
+    activation_vis = torch_image_to_numpy(image[0, i, :, :])
     plt.imshow(activation_vis, cmap="gray")
-    #plt.plot(torch_image_to_numpy(activation))
     n += 1
-plt.savefig("plots/task_4b.png")
+plt.savefig("plots/task_4c.png")
