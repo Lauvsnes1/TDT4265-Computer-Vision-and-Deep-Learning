@@ -25,7 +25,13 @@ files_to_include = {
     "task4b": [".py"],
     "trainer": [".py"],
     "utils": [".py"],
-    "dataloaders": [".py"]
+    "dataloaders": [".py"],
+    "task3_e": [".py"],
+    "task3_model1": [".py"],
+    "task3_model2": [".py"],
+    "task3d": [".py"],
+    "task4c": [".py"],
+    "task4a": [".py"]
 }
 zipfile_path = "assignment_code.zip"
 print("-"*80)
@@ -44,8 +50,7 @@ files_added = []
 with zipfile.ZipFile(zipfile_path, "w") as fp:
     for filename, extensions in files_to_include.items():
         filepath = select_file(filename, extensions)
-        assert os.path.isfile(filepath),\
-            f"Did not find path: {filepath}"
+        assert os.path.isfile(filepath)
         fp.write(filepath)
         files_added.append(filepath)
 
