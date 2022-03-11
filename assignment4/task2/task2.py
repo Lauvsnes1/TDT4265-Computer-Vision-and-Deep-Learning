@@ -16,12 +16,42 @@ def calculate_iou(prediction_box, gt_box):
             float: value of the intersection of union for the two boxes.
     """
     # YOUR CODE HERE
-
     # Compute intersection
+    #First we compute the intersection box
+    x_min = max(prediction_box[0], gt_box[0])
+    y_min = max(prediction_box[1], gt_box[1])
+    x_max = min(prediction_box[2], gt_box[2])
+    y_max = min(prediction_box[3], gt_box[3])
+    
+    #check if no intersection
+    if (x_max < x_min) or (y_max < y_min):
+        return 0.0
+    #Compute the area of intersection
+    x_diff = abs(x_max - x_min)
+    y_diff = abs(y_max - y_min)
+    inter_area = x_diff * y_diff
 
+    
     # Compute union
-    iou = 0
+    pbox_xdiff = abs(prediction_box[2] - prediction_box[0])
+    pbox_ydiff = abs(prediction_box[3] - prediction_box[1])
+    
+    gtbox_xdiff = abs(gt_box[2] - gt_box[0])
+    gtbox_ydiff = abs(gt_box[3] - gt_box[1])
+    
+    pbox_area = pbox_xdiff * pbox_ydiff
+
+    gt_area = gtbox_xdiff * gtbox_ydiff
+
+    
+    union = pbox_area + gt_area - (inter_area)
+    
+    #compute iou
+    iou = inter_area / union
+    
+    
     assert iou >= 0 and iou <= 1
+    print(iou)
     return iou
 
 
