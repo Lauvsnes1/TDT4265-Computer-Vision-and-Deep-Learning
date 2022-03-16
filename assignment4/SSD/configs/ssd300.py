@@ -24,7 +24,7 @@ anchors = L(AnchorBoxes)(
     feature_sizes=[[38, 38], [19, 19], [10, 10], [5, 5], [3, 3], [1, 1]],
     # Strides is the number of pixels (in image space) between each spatial position in the feature map
     strides=[[8, 8], [16, 16], [32, 32], [64, 64], [100, 100], [300, 300]],
-    min_sizes=[[30, 30], [60, 60], [111, 111], [162, 162], [213, 213], [264, 264], [315, 315]],
+    min_sizes=[[15, 15], [30, 30], [70, 70], [150, 150], [213, 213], [264, 264], [315, 315]],
     # aspect ratio is defined per feature map (first index is largest feature map (38x38))
     # aspect ratio is used to define two boxes per element in the list. 
     # if ratio=[2], boxes will be created with ratio 1:2 and 2:1
@@ -36,7 +36,7 @@ anchors = L(AnchorBoxes)(
 )
 
 backbone = L(backbones.BasicModel)(
-    output_channels=[128, 256, 128, 128, 64, 64],
+    output_channels=[128, 256, 128, 128, 256, 512],
     image_channels="${train.image_channels}",
     output_feature_sizes="${anchors.feature_sizes}"
 )
@@ -70,7 +70,7 @@ data_train=dict(
             L(ToTensor)(), # ToTensor has to be applied before conversion to anchors.
             # GroundTruthBoxesToAnchors assigns each ground truth to anchors, required to compute loss in training.
             # L(Resize)(imshape=(400,400)),
-            # L(RandomSampleCrop)(),
+            L(RandomSampleCrop)(),
             L(GroundTruthBoxesToAnchors)(anchors="${anchors}", iou_threshold=0.5),
         ])
     ),
@@ -80,7 +80,7 @@ data_train=dict(
     ),
     # GPU transforms can heavily speedup data augmentations.
     gpu_transform=L(torchvision.transforms.Compose)(transforms=[
-        L(Normalize)(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]) # Normalize has to be applied after ToTensor (GPU transform is always after CPU)
+        L(Normalize)(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]) # Normalize has to be applied after ToTensor (GPU transform is always after CPU)
     ])
 )
 data_val=dict(
@@ -95,7 +95,7 @@ data_val=dict(
        dataset="${..dataset}", num_workers=4, pin_memory=True, shuffle=False, batch_size="${...train.batch_size}", collate_fn=utils.batch_collate_val
     ),
     gpu_transform=L(torchvision.transforms.Compose)(transforms=[
-        L(Normalize)(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
+        L(Normalize)(mean= [0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 )
 
