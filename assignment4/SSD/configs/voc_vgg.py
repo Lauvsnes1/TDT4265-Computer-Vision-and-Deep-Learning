@@ -16,7 +16,7 @@ model.num_classes = 20 + 1
 
 optimizer.lr= 5e-3
 schedulers.multistep.milestones = [70000, 9000]
-train.epochs = 40
+train.epochs = 17
 
 train_cpu_transform = L(torchvision.transforms.Compose)(transforms=[
     L(ToTensor)(),

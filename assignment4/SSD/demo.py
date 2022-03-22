@@ -13,11 +13,15 @@ from pathlib import Path
 
 @torch.no_grad()
 @click.command()
-@click.argument("config_path", type=click.Path(exists=True, dir_okay=False, path_type=Path))
-@click.argument("image_dir", type=click.Path(exists=True, dir_okay=True, path_type=Path))
-@click.argument("output_dir", type=click.Path(dir_okay=True, path_type=Path))
+@click.argument("config_path", type=click.Path(exists=True, dir_okay=False, path_type=str))
+@click.argument("image_dir", type=click.Path(exists=True, dir_okay=True, path_type=str))
+@click.argument("output_dir", type=click.Path(dir_okay=True, path_type=str))
 @click.option("-s", "--score_threshold", type=click.FloatRange(min=0, max=1), default=.3)
-def run_demo(config_path: Path, score_threshold: float, image_dir: Path, output_dir: Path):
+def run_demo(config_path: str, score_threshold: float, image_dir : Path, output_dir: str):
+    config_path = Path(config_path)
+    image_dir = Path(image_dir)
+    output_dir = Path(output_dir)
+
     cfg = utils.load_config(config_path)
     model = tops.to_cuda(instantiate(cfg.model))
     model.eval()
@@ -43,7 +47,7 @@ def run_demo(config_path: Path, score_threshold: float, image_dir: Path, output_
         boxes[:, [1, 3]] *= height
         boxes, categories, scores = [_.cpu().numpy() for _ in [boxes, categories, scores]]
         drawn_image = draw_boxes(
-            orig_img, boxes, categories, scores).astype(np.uint8)
+            orig_img, boxes, categories - 1, scores).astype(np.uint8)
         im = Image.fromarray(drawn_image)
         output_path = output_dir.joinpath(f"{image_name}.png")
         im.save(output_path)
